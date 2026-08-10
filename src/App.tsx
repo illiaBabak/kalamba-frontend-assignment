@@ -4,11 +4,11 @@ import Article from "./pages/Article";
 import ArticleList from "./pages/ArticleList";
 import Editor from "./pages/Editor";
 import Login from "./pages/Login";
-import Logout from "./pages/Logout";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Logout from "pages/Logout";
 
 function App() {
   return (

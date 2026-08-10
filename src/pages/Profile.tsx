@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Profile() {
+  const location = useLocation();
+
   return (
     <div className="profile-page">
       <div className="user-info">
@@ -28,38 +30,16 @@ export default function Profile() {
             <div className="articles-toggle">
               <ul className="nav nav-pills outline-active">
                 <li className="nav-item">
-                  <Link to="" className="nav-link active">
+                  <Link to={location.pathname} className="nav-link active">
                     My Articles
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="" className="nav-link">
+                  <Link to={`${location.pathname}/favorites`} className="nav-link">
                     Favorited Articles
                   </Link>
                 </li>
               </ul>
-            </div>
-
-            <div className="article-preview">
-              <div className="article-meta">
-                <Link to="/profile/ericsimmons">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" />
-                </Link>
-                <div className="info">
-                  <Link to="/profile/ericsimmons" className="author">
-                    Eric Simons
-                  </Link>
-                  <span className="date">January 20th</span>
-                </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart" /> 29
-                </button>
-              </div>
-              <Link to="/how-to-build-webapps-that-scale" className="preview-link">
-                <h1>How to build webapps that scale</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-              </Link>
             </div>
 
             <div className="article-preview">

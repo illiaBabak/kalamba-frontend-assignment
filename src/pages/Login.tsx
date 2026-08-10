@@ -1,5 +1,6 @@
 import { useLogin } from "api/mutations";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 type FormData = {
   email: string;
@@ -17,10 +18,12 @@ const DEFAULT_VALUE: FormData = {
 };
 
 export default function Login() {
+  const history = useHistory();
+
   const [values, setValues] = useState<FormData>(DEFAULT_VALUE);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
 
-  const { mutate: login, isLoading, error } = useLogin();
+  const { mutateAsync: login, isLoading, error } = useLogin();
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setValues(prev => ({ ...prev, [field]: value }));
@@ -48,7 +51,7 @@ export default function Login() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) return;
 
     const payload = {
@@ -56,7 +59,9 @@ export default function Login() {
       password: values.password,
     };
 
-    login(payload);
+    await login(payload);
+
+    history.push("/");
   };
 
   return (

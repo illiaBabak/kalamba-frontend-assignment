@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom";
+import { useLogout } from "api/mutations";
+import { useHistory } from "react-router-dom";
 
 export default function Settings() {
+  const history = useHistory();
+
+  const { mutateAsync: logout, isLoading } = useLogout();
+
+  const handleLogout = async () => {
+    await logout();
+
+    history.push("/");
+  };
+
   return (
     <div className="settings-page">
       <div className="container page">
@@ -29,9 +40,9 @@ export default function Settings() {
               </fieldset>
             </form>
             <hr />
-            <Link className="btn btn-outline-danger" to="/logout">
+            <button className="btn btn-outline-danger" type="button" disabled={isLoading} onClick={handleLogout}>
               Or click here to logout.
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { useGetCurrentUser } from "api/queries";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
-  const { data } = useGetCurrentUser();
+  const { data: currentUser } = useGetCurrentUser();
 
   const location = useLocation();
 
@@ -22,25 +22,39 @@ export default function Navbar() {
             </Link>
           </li>
 
-          <li className="nav-item">
-            <Link className={`nav-link ${isActive("/editor") ? "active" : ""}`} to="/editor">
-              <i className="ion-compose" />
-              &nbsp;New Article
-            </Link>
-          </li>
+          {currentUser ? (
+            <>
+              <li className="nav-item">
+                <Link className={`nav-link ${isActive("/editor") ? "active" : ""}`} to="/editor">
+                  <i className="ion-compose" />
+                  &nbsp;New Article
+                </Link>
+              </li>
 
-          <li className="nav-item">
-            <Link className={`nav-link ${isActive("/settings") ? "active" : ""}`} to="/settings">
-              <i className="ion-gear-a" />
-              &nbsp;Settings
-            </Link>
-          </li>
+              <li className="nav-item">
+                <Link className={`nav-link ${isActive("/settings") ? "active" : ""}`} to="/settings">
+                  <i className="ion-gear-a" />
+                  &nbsp;Settings
+                </Link>
+              </li>
 
-          <li className="nav-item">
-            <Link className={`nav-link ${isActive("/login") ? "active" : ""}`} to="/login">
-              Sign in
-            </Link>
-          </li>
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${isActive(`/profile/${currentUser.username}`) ? "active" : ""}`}
+                  to={`/profile/${currentUser.username}`}
+                >
+                  <img className="user-pic" src={currentUser.image} alt={currentUser.username} />
+                  {currentUser.username}
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li className="nav-item">
+              <Link className={`nav-link ${isActive("/login") ? "active" : ""}`} to="/login">
+                Sign in
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

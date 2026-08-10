@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { resolveAvatarUrl } from "utils/avatar";
 
 export default function ArticleList() {
   return (
@@ -31,7 +32,7 @@ export default function ArticleList() {
             <div className="article-preview">
               <div className="article-meta">
                 <Link to="/profile/ericsimmons">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" />
+                  <img src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")} alt="Eric Simons" />
                 </Link>
                 <div className="info">
                   <Link to="/profile/ericsimmons" className="author">
@@ -53,7 +54,7 @@ export default function ArticleList() {
             <div className="article-preview">
               <div className="article-meta">
                 <Link to="/profile/albertpai">
-                  <img src="http://i.imgur.com/N4VcUeJ.jpg" />
+                  <img src={resolveAvatarUrl("http://i.imgur.com/N4VcUeJ.jpg")} alt="Albert Pai" />
                 </Link>
                 <div className="info">
                   <Link to="/profile/albertpai" className="author">

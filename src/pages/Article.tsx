@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { resolveAvatarUrl } from "utils/avatar";
 
 export default function Article() {
   return (
@@ -9,7 +10,7 @@ export default function Article() {
 
           <div className="article-meta">
             <Link to="/profile/ericsimmons">
-              <img src="http://i.imgur.com/Qr71crq.jpg" />
+              <img src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")} alt="Eric Simons" />
             </Link>
             <div className="info">
               <Link to="/profile/ericsimmons" className="author">
@@ -44,7 +45,7 @@ export default function Article() {
         <div className="article-actions">
           <div className="article-meta">
             <Link to="/profile/ericsimmons">
-              <img src="http://i.imgur.com/Qr71crq.jpg" />
+              <img src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")} alt="Eric Simons" />
             </Link>
             <div className="info">
               <Link to="/profile/ericsimmons" className="author">
@@ -71,7 +72,11 @@ export default function Article() {
                 <textarea className="form-control" placeholder="Write a comment..." rows={3} />
               </div>
               <div className="card-footer">
-                <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
+                <img
+                  src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")}
+                  className="comment-author-img"
+                  alt="Eric Simons"
+                />
                 <button className="btn btn-sm btn-primary">Post Comment</button>
               </div>
             </form>
@@ -82,7 +87,11 @@ export default function Article() {
               </div>
               <div className="card-footer">
                 <Link to="/profile/jacobschmidt" className="comment-author">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
+                  <img
+                    src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")}
+                    className="comment-author-img"
+                    alt="Jacob Schmidt"
+                  />
                 </Link>
                 &nbsp;
                 <Link to="/profile/jacobschmidt" className="comment-author">
@@ -98,7 +107,11 @@ export default function Article() {
               </div>
               <div className="card-footer">
                 <Link to="/profile/jacobschmidt" className="comment-author">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
+                  <img
+                    src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")}
+                    className="comment-author-img"
+                    alt="Jacob Schmidt"
+                  />
                 </Link>
                 &nbsp;
                 <Link to="/profile/jacobschmidt" className="comment-author">

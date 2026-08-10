@@ -1,5 +1,6 @@
 import { useGetCurrentUser } from "api/queries";
 import { Link, useLocation } from "react-router-dom";
+import { resolveAvatarUrl } from "utils/avatar";
 
 export default function Navbar() {
   const { data: currentUser } = useGetCurrentUser();
@@ -43,7 +44,7 @@ export default function Navbar() {
                   className={`nav-link ${isActive(`/profile/${currentUser.username}`) ? "active" : ""}`}
                   to={`/profile/${currentUser.username}`}
                 >
-                  <img className="user-pic" src={currentUser.image} alt={currentUser.username} />
+                  <img className="user-pic" src={resolveAvatarUrl(currentUser.image)} alt={currentUser.username} />
                   {currentUser.username}
                 </Link>
               </li>

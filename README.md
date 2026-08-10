@@ -15,11 +15,12 @@ The application, as the entry point, should display the articles list page. Sinc
 #### Homepage / Articles list
 
 The articles list page should display the list of articles with:
-* Article title
-* Article description
-* Date of publication
-* Article author
-* Button to favorite article (with favorite count)
+
+- Article title
+- Article description
+- Date of publication
+- Article author
+- Button to favorite article (with favorite count)
 
 Please ignore implementation of tags section, it is included for improved visuals of this page.
 
@@ -30,31 +31,33 @@ Link each author displayed to a dedicated page with the author profile content.
 #### Article
 
 The article page should display:
-* Article title
-* Article body
-* Date of publication
-* Article author
-* Button to favorite article (with favorites count)
-* Button to follow author (with followers count)
-* _optional: Convert article body from Markdown text to HTML_
+
+- Article title
+- Article body
+- Date of publication
+- Article author
+- Button to favorite article (with favorites count)
+- Button to follow author (with followers count)
+- _optional: Convert article body from Markdown text to HTML_
 
 Please ignore implementation of comment section, it is included for improved visuals of this page.
 
 #### Profile
 
 The profile page should display:
-* Author name
-* Author bio
-* Author image
-* Button to follow author (with followers count)
-* List of articles written by that author 
+
+- Author name
+- Author bio
+- Author image
+- Button to follow author (with followers count)
+- List of articles written by that author
 
 #### Login
 
 The login page should display form with email and password. The user of the application should be able to log in using the following credentials:
 
 | Email               | Password           |
-|---------------------|--------------------|
+| ------------------- | ------------------ |
 | `alice@example.com` | `I_<3-R0ber7`      |
 | `bob@example.com`   | `4L1ce-I5 mY_li3f` |
 
@@ -112,7 +115,7 @@ Running the above in fresh clone of this repository should result in the skeleto
 The goal of this task is to provide a discussion context for the subsequent technical interview and is not meant to be time consuming.
 Although it is intended for all levels of Frontend Developers, we expect more attention to detail the more experienced you are.
 
-Using solutions recommended by React is preferred. 
+Using solutions recommended by React is preferred.
 You can emphasise on certain aspects of the task to showcase your skills, either through cleverly using React built in mechanisms or leaving `TODO` notes for more advanced solutions that come to your mind or when taking shortcuts to reduce development time.
 
 The time to complete this project will depend on your expertise, but based on our own employees executing this task, we estimate that it should not take more than 4-8 hours depending on your proficiency.
@@ -122,21 +125,19 @@ Do not invest your time into implementing additional business requirements that 
 
 We would like to see one unit test (of different types of code) being showcased, but by any means please do not try ensuring 100% coverage – while it’s never a waste of time in real projects, we don’t want you to waste it for homework assignment.
 
-
 ## Evaluation criteria
 
 There are certain aspects that will be considered when evaluating your solution:
 
-* code quality
-* implementation according to the specifications
-* expertise in using React
-* expertise in using external dependencies
-* expertise in using git
-* expertise in testing your own code
-* expertise in working with HTML5 and Web APIs
-* expertise in working with CSS
-* expertise in calling external APIs
-
+- code quality
+- implementation according to the specifications
+- expertise in using React
+- expertise in using external dependencies
+- expertise in using git
+- expertise in testing your own code
+- expertise in working with HTML5 and Web APIs
+- expertise in working with CSS
+- expertise in calling external APIs
 
 ## Getting Started with Create React App
 

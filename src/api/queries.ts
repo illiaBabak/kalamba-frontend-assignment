@@ -3,7 +3,13 @@ import { getAuthToken } from "lib/jwt";
 import { API_URL } from "utils/constants";
 import { isMultipleArticlesResponse, isProfileResponse, isUserResponse } from "utils/guards";
 import { MultipleArticlesResponse, Profile, ProfileArticleFilter, User } from "utils/types";
-import { GET_CURRENT_USER_QUERY, GET_PROFILE_ARTICLES_QUERY, GET_PROFILE_QUERY } from "./constants";
+import {
+  GET_CURRENT_USER_QUERY,
+  GET_FEED_ARTICLES_QUERY,
+  GET_GLOBAL_ARTICLES_QUERY,
+  GET_PROFILE_ARTICLES_QUERY,
+  GET_PROFILE_QUERY,
+} from "./constants";
 import { fetchWithToken } from "utils/fetchWithToken";
 
 const getCurrentUser = async (): Promise<User> => {
@@ -67,14 +73,12 @@ const getProfileArticles = async (
   username: string,
   filter: ProfileArticleFilter
 ): Promise<MultipleArticlesResponse> => {
-  const url = `${API_URL}/articles?${filter}=${encodeURIComponent(username)}`;
-  const init: RequestInit = {
+  const response = await fetch(`${API_URL}/articles?${filter}=${encodeURIComponent(username)}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
     },
-  };
-  const response = getAuthToken() ? await fetchWithToken(url, init) : await fetch(url, init);
+  });
 
   if (!response.ok) {
     throw new Error("Something went wrong during get profile articles");
@@ -93,5 +97,63 @@ export const useGetProfileArticles = (username: string, filter: ProfileArticleFi
   useQuery({
     queryKey: [GET_PROFILE_ARTICLES_QUERY, username, filter],
     queryFn: () => getProfileArticles(username, filter),
+    retry: false,
+  });
+
+const getGlobalArticles = async (): Promise<MultipleArticlesResponse> => {
+  const response = await fetch(`${API_URL}/articles`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Something went wrong during get global articles");
+  }
+
+  const data = await response.json();
+
+  if (!isMultipleArticlesResponse(data)) {
+    throw new Error("Invalid response from server for global articles");
+  }
+
+  return data;
+};
+
+export const useGetGlobalArticles = (enabled: boolean) =>
+  useQuery({
+    queryKey: [GET_GLOBAL_ARTICLES_QUERY],
+    queryFn: () => getGlobalArticles(),
+    enabled,
+    retry: false,
+  });
+
+const getFeedArticles = async (): Promise<MultipleArticlesResponse> => {
+  const response = await fetchWithToken(`${API_URL}/articles/feed`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Something went wrong during get feed articles");
+  }
+
+  const data = await response.json();
+
+  if (!isMultipleArticlesResponse(data)) {
+    throw new Error("Invalid response from server for feed articles");
+  }
+
+  return data;
+};
+
+export const useGetFeedArticles = (username: string | undefined, enabled: boolean) =>
+  useQuery({
+    queryKey: [GET_FEED_ARTICLES_QUERY, username],
+    queryFn: getFeedArticles,
+    enabled: !!username && enabled,
     retry: false,
   });

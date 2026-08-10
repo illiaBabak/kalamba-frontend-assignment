@@ -1,7 +1,28 @@
+import { useGetCurrentUser, useGetFeedArticles, useGetGlobalArticles } from "api/queries";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { resolveAvatarUrl } from "utils/avatar";
+import ArticlePreview from "./ArticlePreview";
+
+type Feed = "global" | "personal";
 
 export default function ArticleList() {
+  const [selectedFeed, setSelectedFeed] = useState<Feed>("global");
+  const { data: currentUser, isFetching: isCurrentUserFetching } = useGetCurrentUser();
+
+  const activeFeed = currentUser && selectedFeed === "personal" ? "personal" : "global";
+
+  const globalArticles = useGetGlobalArticles(activeFeed === "global" && !isCurrentUserFetching);
+
+  const feedArticles = useGetFeedArticles(currentUser?.username, activeFeed === "personal" && !isCurrentUserFetching);
+
+  const articlesQuery = activeFeed === "personal" ? feedArticles : globalArticles;
+
+  useEffect(() => {
+    if (!currentUser && selectedFeed === "personal") {
+      setSelectedFeed("global");
+    }
+  }, [currentUser, selectedFeed]);
+
   return (
     <div className="home-page">
       <div className="banner">
@@ -16,62 +37,42 @@ export default function ArticleList() {
           <div className="col-md-9">
             <div className="feed-toggle">
               <ul className="nav nav-pills outline-active">
+                {!!currentUser && (
+                  <li className="nav-item">
+                    <Link
+                      to=""
+                      className={`nav-link${activeFeed === "personal" ? " active" : ""}`}
+                      onClick={() => setSelectedFeed("personal")}
+                    >
+                      Your Feed
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
-                  <Link to="" className="nav-link disabled">
-                    Your Feed
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="" className="nav-link active">
+                  <Link
+                    to=""
+                    className={`nav-link${activeFeed === "global" ? " active" : ""}`}
+                    onClick={() => setSelectedFeed("global")}
+                  >
                     Global Feed
                   </Link>
                 </li>
               </ul>
             </div>
 
-            <div className="article-preview">
-              <div className="article-meta">
-                <Link to="/profile/ericsimmons">
-                  <img src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")} alt="Eric Simons" />
-                </Link>
-                <div className="info">
-                  <Link to="/profile/ericsimmons" className="author">
-                    Eric Simons
-                  </Link>
-                  <span className="date">January 20th</span>
-                </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart" /> 29
-                </button>
-              </div>
-              <Link to="/how-to-build-webapps-that-scale" className="preview-link">
-                <h1>How to build webapps that scale</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-              </Link>
-            </div>
+            {!articlesQuery.data && (isCurrentUserFetching || articlesQuery.isLoading) && (
+              <div className="article-preview">Loading articles...</div>
+            )}
 
-            <div className="article-preview">
-              <div className="article-meta">
-                <Link to="/profile/albertpai">
-                  <img src={resolveAvatarUrl("http://i.imgur.com/N4VcUeJ.jpg")} alt="Albert Pai" />
-                </Link>
-                <div className="info">
-                  <Link to="/profile/albertpai" className="author">
-                    Albert Pai
-                  </Link>
-                  <span className="date">January 20th</span>
-                </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart" /> 32
-                </button>
-              </div>
-              <Link to="/the-song-you-wont-ever-stop-singing" className="preview-link">
-                <h1>The song you won&lsquo;t ever stop singing. No matter how hard you try.</h1>
-                <p>This is the description for the post.</p>
-                <span>Read more...</span>
-              </Link>
-            </div>
+            {articlesQuery.isError && <div className="article-preview">Unable to load articles.</div>}
+
+            {!articlesQuery.isLoading && !articlesQuery.isError && articlesQuery.data?.articles.length === 0 && (
+              <div className="article-preview">No articles are here... yet.</div>
+            )}
+
+            {articlesQuery.data?.articles.map(article => (
+              <ArticlePreview article={article} key={article.slug} />
+            ))}
           </div>
 
           <div className="col-md-3">

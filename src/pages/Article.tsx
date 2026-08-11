@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { resolveAvatarUrl } from "utils/avatar";
 import { Article as ArticleType } from "utils/types";
 import dayjs from "dayjs";
+import FavoriteButton from "components/FavoriteButton";
 
 type ArticleRouteParams = {
   slug?: string;
@@ -34,11 +35,7 @@ function ArticleMeta({ article, showFollowButton }: ArticleMetaProps) {
         </button>
       )}
       {showFollowButton && <>&nbsp;&nbsp;</>}
-      <button className={`btn btn-sm ${article.favorited ? "btn-primary" : "btn-outline-primary"}`} type="button">
-        <i className="ion-heart" />
-        &nbsp; {article.favorited ? "Unfavorite Post" : "Favorite Post"}{" "}
-        <span className="counter">({article.favoritesCount})</span>
-      </button>
+      <FavoriteButton article={article} />
     </div>
   );
 }

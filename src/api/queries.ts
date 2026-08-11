@@ -13,6 +13,9 @@ import {
 } from "./constants";
 import { fetchWithToken } from "utils/fetchWithToken";
 
+const fetchWithOptionalToken = (url: string, init: RequestInit): Promise<Response> =>
+  getAuthToken() ? fetchWithToken(url, init) : fetch(url, init);
+
 const getCurrentUser = async (): Promise<User> => {
   const response = await fetchWithToken(`${API_URL}/user`, {
     method: "GET",
@@ -74,7 +77,7 @@ const getProfileArticles = async (
   username: string,
   filter: ProfileArticleFilter
 ): Promise<MultipleArticlesResponse> => {
-  const response = await fetch(`${API_URL}/articles?${filter}=${encodeURIComponent(username)}`, {
+  const response = await fetchWithOptionalToken(`${API_URL}/articles?${filter}=${encodeURIComponent(username)}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -102,7 +105,7 @@ export const useGetProfileArticles = (username: string, filter: ProfileArticleFi
   });
 
 const getGlobalArticles = async (): Promise<MultipleArticlesResponse> => {
-  const response = await fetch(`${API_URL}/articles`, {
+  const response = await fetchWithOptionalToken(`${API_URL}/articles`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -160,7 +163,7 @@ export const useGetFeedArticles = (username: string | undefined, enabled: boolea
   });
 
 const getArticle = async (slug: string): Promise<Article> => {
-  const response = await fetch(`${API_URL}/articles/${encodeURIComponent(slug)}`, {
+  const response = await fetchWithOptionalToken(`${API_URL}/articles/${encodeURIComponent(slug)}`, {
     method: "GET",
     headers: {
       Accept: "application/json",

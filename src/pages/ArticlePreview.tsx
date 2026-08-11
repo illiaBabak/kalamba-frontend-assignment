@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { resolveAvatarUrl } from "utils/avatar";
 import { Article } from "utils/types";
+import FavoriteButton from "components/FavoriteButton";
 
 type ArticlePreviewProps = {
   article: Article;
@@ -20,9 +21,7 @@ export default function ArticlePreview({ article }: ArticlePreviewProps) {
           </Link>
           <span className="date">{dayjs(article.createdAt).format("MMMM D, YYYY")}</span>
         </div>
-        <button className="btn btn-outline-primary btn-sm pull-xs-right" type="button">
-          <i className="ion-heart" /> {article.favoritesCount}
-        </button>
+        <FavoriteButton article={article} compact />
       </div>
       <Link to={`/${article.slug}`} className="preview-link">
         <h1>{article.title}</h1>

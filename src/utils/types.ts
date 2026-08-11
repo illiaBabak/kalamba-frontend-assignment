@@ -34,6 +34,10 @@ export type Article = {
   author: Profile;
 };
 
+export type SingleArticleResponse = {
+  article: Article;
+};
+
 export type MultipleArticlesResponse = {
   articles: Article[];
   articlesCount: number;

@@ -1,9 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { getAuthToken } from "lib/jwt";
 import { API_URL } from "utils/constants";
-import { isMultipleArticlesResponse, isProfileResponse, isUserResponse } from "utils/guards";
-import { MultipleArticlesResponse, Profile, ProfileArticleFilter, User } from "utils/types";
+import { isMultipleArticlesResponse, isProfileResponse, isSingleArticleResponse, isUserResponse } from "utils/guards";
+import { Article, MultipleArticlesResponse, Profile, ProfileArticleFilter, User } from "utils/types";
 import {
+  GET_ARTICLE_QUERY,
   GET_CURRENT_USER_QUERY,
   GET_FEED_ARTICLES_QUERY,
   GET_GLOBAL_ARTICLES_QUERY,
@@ -155,5 +156,34 @@ export const useGetFeedArticles = (username: string | undefined, enabled: boolea
     queryKey: [GET_FEED_ARTICLES_QUERY, username],
     queryFn: getFeedArticles,
     enabled: !!username && enabled,
+    retry: false,
+  });
+
+const getArticle = async (slug: string): Promise<Article> => {
+  const response = await fetch(`${API_URL}/articles/${encodeURIComponent(slug)}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Something went wrong during get article");
+  }
+
+  const data = await response.json();
+
+  if (!isSingleArticleResponse(data)) {
+    throw new Error("Invalid response from server for article");
+  }
+
+  return data.article;
+};
+
+export const useGetArticle = (slug: string) =>
+  useQuery({
+    queryKey: [GET_ARTICLE_QUERY, slug],
+    queryFn: () => getArticle(slug),
+    enabled: !!slug.trim(),
     retry: false,
   });

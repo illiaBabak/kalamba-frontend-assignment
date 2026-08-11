@@ -1,4 +1,12 @@
-import { Article, MultipleArticlesResponse, Profile, ProfileResponse, User, UserResponse } from "./types";
+import {
+  Article,
+  MultipleArticlesResponse,
+  Profile,
+  ProfileResponse,
+  SingleArticleResponse,
+  User,
+  UserResponse,
+} from "./types";
 
 export const isString = (data: unknown): data is string => typeof data === "string";
 
@@ -67,3 +75,6 @@ export const isMultipleArticlesResponse = (data: unknown): data is MultipleArtic
   Array.isArray(data.articles) &&
   data.articles.every(isArticle) &&
   isNumber(data.articlesCount);
+
+export const isSingleArticleResponse = (data: unknown): data is SingleArticleResponse =>
+  isObject(data) && "article" in data && isArticle(data.article);

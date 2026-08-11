@@ -1,68 +1,99 @@
-import { Link } from "react-router-dom";
+import { useGetArticle, useGetCurrentUser } from "api/queries";
+import { Link, useParams } from "react-router-dom";
 import { resolveAvatarUrl } from "utils/avatar";
+import { Article as ArticleType } from "utils/types";
+import dayjs from "dayjs";
+
+type ArticleRouteParams = {
+  slug?: string;
+};
+
+type ArticleMetaProps = {
+  article: ArticleType;
+  showFollowButton: boolean;
+};
+
+function ArticleMeta({ article, showFollowButton }: ArticleMetaProps) {
+  const { author } = article;
+
+  return (
+    <div className="article-meta">
+      <Link to={`/profile/${author.username}`}>
+        <img src={resolveAvatarUrl(author.image)} alt={author.username} />
+      </Link>
+      <div className="info">
+        <Link to={`/profile/${author.username}`} className="author">
+          {author.username}
+        </Link>
+        <span className="date">{dayjs(article.createdAt).format("MMMM D, YYYY")}</span>
+      </div>
+      {showFollowButton && (
+        <button className="btn btn-sm btn-outline-secondary" type="button">
+          <i className={author.following ? "ion-minus-round" : "ion-plus-round"} />
+          &nbsp; {author.following ? "Unfollow" : "Follow"} {author.username}
+        </button>
+      )}
+      {showFollowButton && <>&nbsp;&nbsp;</>}
+      <button className={`btn btn-sm ${article.favorited ? "btn-primary" : "btn-outline-primary"}`} type="button">
+        <i className="ion-heart" />
+        &nbsp; {article.favorited ? "Unfavorite Post" : "Favorite Post"}{" "}
+        <span className="counter">({article.favoritesCount})</span>
+      </button>
+    </div>
+  );
+}
 
 export default function Article() {
+  const { slug } = useParams<ArticleRouteParams>();
+
+  const { data: article, isLoading, isError } = useGetArticle(slug ?? "");
+
+  const { data: currentUser, isFetching: isCurrentUserFetching } = useGetCurrentUser();
+
+  if (!slug?.trim()) {
+    return <div className="container page">Invalid article.</div>;
+  }
+
+  if (isLoading) {
+    return <div className="container page">Loading article...</div>;
+  }
+
+  if (isError || !article) {
+    return <div className="container page">Unable to load article.</div>;
+  }
+
+  const isOwnArticle = currentUser?.username === article.author.username;
+  const showFollowButton = !isCurrentUserFetching && !isOwnArticle;
+
   return (
     <div className="article-page">
       <div className="banner">
         <div className="container">
-          <h1>How to build webapps that scale</h1>
-
-          <div className="article-meta">
-            <Link to="/profile/ericsimmons">
-              <img src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")} alt="Eric Simons" />
-            </Link>
-            <div className="info">
-              <Link to="/profile/ericsimmons" className="author">
-                Eric Simons
-              </Link>
-              <span className="date">January 20th</span>
-            </div>
-            <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-plus-round" />
-              &nbsp; Follow Eric Simons <span className="counter">(10)</span>
-            </button>
-            &nbsp;&nbsp;
-            <button className="btn btn-sm btn-outline-primary">
-              <i className="ion-heart" />
-              &nbsp; Favorite Post <span className="counter">(29)</span>
-            </button>
-          </div>
+          <h1>{article.title}</h1>
+          <ArticleMeta article={article} showFollowButton={showFollowButton} />
         </div>
       </div>
 
       <div className="container page">
         <div className="row article-content">
           <div className="col-md-12">
-            <p>Web development technologies have evolved at an incredible clip over the past few years.</p>
-            <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-            <p>It&lsquo;s a great solution for learning how other frameworks work.</p>
+            <p style={{ whiteSpace: "pre-line" }}>{article.body}</p>
+            {!!article.tagList.length && (
+              <ul className="tag-list">
+                {article.tagList.map(tag => (
+                  <li className="tag-default tag-pill tag-outline" key={tag}>
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
         <hr />
 
         <div className="article-actions">
-          <div className="article-meta">
-            <Link to="/profile/ericsimmons">
-              <img src={resolveAvatarUrl("http://i.imgur.com/Qr71crq.jpg")} alt="Eric Simons" />
-            </Link>
-            <div className="info">
-              <Link to="/profile/ericsimmons" className="author">
-                Eric Simons
-              </Link>
-              <span className="date">January 20th</span>
-            </div>
-            <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-plus-round" />
-              &nbsp; Follow Eric Simons
-            </button>
-            &nbsp;
-            <button className="btn btn-sm btn-outline-primary">
-              <i className="ion-heart" />
-              &nbsp; Favorite Post <span className="counter">(29)</span>
-            </button>
-          </div>
+          <ArticleMeta article={article} showFollowButton={showFollowButton} />
         </div>
 
         <div className="row">

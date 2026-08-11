@@ -4,10 +4,13 @@
 # ...except
 !@types
 !src
+!src/**
 !public
+!public/**
 
 !.env
 !nginx.conf
 !package.json
 !package-lock.json
 !tsconfig.json
+!.eslintrc.json

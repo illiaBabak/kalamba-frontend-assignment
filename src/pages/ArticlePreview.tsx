@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { resolveAvatarUrl } from "utils/avatar";
 import { Article } from "utils/types";
@@ -17,13 +18,7 @@ export default function ArticlePreview({ article }: ArticlePreviewProps) {
           <Link to={`/profile/${article.author.username}`} className="author">
             {article.author.username}
           </Link>
-          <span className="date">
-            {new Date(article.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </span>
+          <span className="date">{dayjs(article.createdAt).format("MMMM D, YYYY")}</span>
         </div>
         <button className="btn btn-outline-primary btn-sm pull-xs-right" type="button">
           <i className="ion-heart" /> {article.favoritesCount}

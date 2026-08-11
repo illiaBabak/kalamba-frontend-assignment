@@ -13,7 +13,7 @@ export type UserResponse = {
 export type Profile = {
   username: string;
   bio: string;
-  image?: string | null;
+  image: string;
   following: boolean;
 };
 

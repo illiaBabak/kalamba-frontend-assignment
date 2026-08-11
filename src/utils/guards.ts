@@ -38,7 +38,7 @@ export const isProfile = (data: unknown): data is Profile =>
   "following" in data &&
   isString(data.username) &&
   isString(data.bio) &&
-  (data.image === undefined || data.image === null || isString(data.image)) &&
+  isString(data.image) &&
   isBoolean(data.following);
 
 export const isProfileResponse = (data: unknown): data is ProfileResponse =>

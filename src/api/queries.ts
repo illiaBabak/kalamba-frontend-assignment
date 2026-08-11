@@ -46,7 +46,7 @@ export const useGetCurrentUser = () =>
   });
 
 const getProfile = async (username: string): Promise<Profile> => {
-  const response = await fetch(`${API_URL}/profiles/${encodeURIComponent(username)}`, {
+  const response = await fetchWithOptionalToken(`${API_URL}/profiles/${encodeURIComponent(username)}`, {
     method: "GET",
     headers: {
       Accept: "application/json",

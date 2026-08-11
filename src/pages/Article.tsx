@@ -4,6 +4,7 @@ import { resolveAvatarUrl } from "utils/avatar";
 import { Article as ArticleType } from "utils/types";
 import dayjs from "dayjs";
 import FavoriteButton from "components/FavoriteButton";
+import FollowButton from "components/FollowButton";
 
 type ArticleRouteParams = {
   slug?: string;
@@ -28,12 +29,7 @@ function ArticleMeta({ article, showFollowButton }: ArticleMetaProps) {
         </Link>
         <span className="date">{dayjs(article.createdAt).format("MMMM D, YYYY")}</span>
       </div>
-      {showFollowButton && (
-        <button className="btn btn-sm btn-outline-secondary" type="button">
-          <i className={author.following ? "ion-minus-round" : "ion-plus-round"} />
-          &nbsp; {author.following ? "Unfollow" : "Follow"} {author.username}
-        </button>
-      )}
+      {showFollowButton && <FollowButton profile={author} />}
       {showFollowButton && <>&nbsp;&nbsp;</>}
       <FavoriteButton article={article} />
     </div>

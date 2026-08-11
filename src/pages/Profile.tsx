@@ -2,6 +2,7 @@ import { useGetCurrentUser, useGetProfile, useGetProfileArticles } from "api/que
 import { Link, useParams, useRouteMatch } from "react-router-dom";
 import { resolveAvatarUrl } from "utils/avatar";
 import ArticlePreview from "./ArticlePreview";
+import FollowButton from "components/FollowButton";
 
 type ProfileRouteParams = {
   username: string;
@@ -35,10 +36,7 @@ export default function Profile() {
                   &nbsp; Edit Profile Settings
                 </Link>
               ) : (
-                <button className="btn btn-sm btn-outline-secondary action-btn" type="button">
-                  <i className={profile.following ? "ion-minus-round" : "ion-plus-round"} />
-                  &nbsp; {profile.following ? "Unfollow" : "Follow"} {profile.username}
-                </button>
+                <FollowButton profile={profile} actionButton />
               )}
             </div>
           </div>

@@ -1,15 +1,17 @@
 import { useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "utils/constants";
-import { isSingleArticleResponse, isUserResponse } from "utils/guards";
-import { Article, MultipleArticlesResponse, User } from "utils/types";
+import { isProfileResponse, isSingleArticleResponse, isUserResponse } from "utils/guards";
+import { Article, Profile, User } from "utils/types";
 import {
   AUTH_MUTATION,
   FAVORITE_ARTICLE_MUTATION,
+  FOLLOW_PROFILE_MUTATION,
   GET_ARTICLE_QUERY,
   GET_CURRENT_USER_QUERY,
   GET_FEED_ARTICLES_QUERY,
   GET_GLOBAL_ARTICLES_QUERY,
   GET_PROFILE_ARTICLES_QUERY,
+  GET_PROFILE_QUERY,
   LOGIN_MUTATION,
   LOGOUT_MUTATION,
 } from "./constants";
@@ -117,6 +119,50 @@ export const useUpdateFavorite = (): UseMutationResult<Article, Error, FavoriteA
         queryClient.invalidateQueries({
           queryKey: [GET_PROFILE_ARTICLES_QUERY],
         }),
+      ]);
+    },
+  });
+};
+
+type FollowProfileVariables = {
+  username: string;
+  following: boolean;
+};
+
+const updateFollow = async ({ username, following }: FollowProfileVariables): Promise<Profile> => {
+  const response = await fetchWithToken(`${API_URL}/profiles/${encodeURIComponent(username)}/follow`, {
+    method: following ? "DELETE" : "POST",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Something went wrong while ${following ? "unfollowing" : "following"} profile`);
+  }
+
+  const data = await response.json();
+
+  if (!isProfileResponse(data)) {
+    throw new Error("Invalid response from server for follow profile");
+  }
+
+  return data.profile;
+};
+
+export const useUpdateFollow = (): UseMutationResult<Profile, Error, FollowProfileVariables> => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [FOLLOW_PROFILE_MUTATION],
+    mutationFn: updateFollow,
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [GET_PROFILE_QUERY] }),
+        queryClient.invalidateQueries({ queryKey: [GET_ARTICLE_QUERY] }),
+        queryClient.invalidateQueries({ queryKey: [GET_GLOBAL_ARTICLES_QUERY] }),
+        queryClient.invalidateQueries({ queryKey: [GET_FEED_ARTICLES_QUERY] }),
+        queryClient.invalidateQueries({ queryKey: [GET_PROFILE_ARTICLES_QUERY] }),
       ]);
     },
   });

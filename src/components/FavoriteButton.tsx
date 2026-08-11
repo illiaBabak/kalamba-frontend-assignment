@@ -31,12 +31,7 @@ export default function FavoriteButton({ article, compact = false }: FavoriteBut
       }`}
       type="button"
       disabled={isLoading || isCurrentUserFetching}
-      onClick={e => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        handleClick();
-      }}
+      onClick={handleClick}
     >
       <i className="ion-heart" />
       {compact ? (

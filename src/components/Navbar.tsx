@@ -2,7 +2,7 @@ import { useGetCurrentUser } from "api/queries";
 import { Link, useLocation } from "react-router-dom";
 import { resolveAvatarUrl } from "utils/avatar";
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   const { data: currentUser } = useGetCurrentUser();
 
   const location = useLocation();

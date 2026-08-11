@@ -139,6 +139,11 @@ There are certain aspects that will be considered when evaluating your solution:
 - expertise in working with CSS
 - expertise in calling external APIs
 
+## Notes
+
+The provided API schema does not expose a followers count for profiles.
+Therefore, Follow/Unfollow functionality is implemented, but the followers count cannot be displayed.
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

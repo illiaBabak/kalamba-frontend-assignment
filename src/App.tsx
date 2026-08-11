@@ -10,7 +10,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Logout from "pages/Logout";
 
-function App() {
+function App(): JSX.Element {
   return (
     <Router>
       <div className="app-root">

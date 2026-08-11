@@ -36,7 +36,7 @@ function ArticleMeta({ article, showFollowButton }: ArticleMetaProps) {
   );
 }
 
-export default function Article() {
+export default function Article(): JSX.Element {
   const { slug } = useParams<ArticleRouteParams>();
 
   const { data: article, isLoading, isError } = useGetArticle(slug ?? "");

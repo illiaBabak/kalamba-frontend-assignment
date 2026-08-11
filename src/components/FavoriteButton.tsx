@@ -8,7 +8,7 @@ type FavoriteButtonProps = {
   compact?: boolean;
 };
 
-export default function FavoriteButton({ article, compact = false }: FavoriteButtonProps) {
+export default function FavoriteButton({ article, compact = false }: FavoriteButtonProps): JSX.Element {
   const history = useHistory();
 
   const { data: currentUser, isFetching: isCurrentUserFetching } = useGetCurrentUser();

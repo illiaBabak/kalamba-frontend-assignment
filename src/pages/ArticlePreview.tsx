@@ -8,7 +8,7 @@ type ArticlePreviewProps = {
   article: Article;
 };
 
-export default function ArticlePreview({ article }: ArticlePreviewProps) {
+export default function ArticlePreview({ article }: ArticlePreviewProps): JSX.Element {
   return (
     <div className="article-preview">
       <div className="article-meta">

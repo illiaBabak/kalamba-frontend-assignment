@@ -1,4 +1,4 @@
-export default function Editor() {
+export default function Editor(): JSX.Element {
   return (
     <div className="editor-page">
       <div className="container page">

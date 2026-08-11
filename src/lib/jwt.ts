@@ -1,6 +1,6 @@
 const AUTH_TOKEN = "token";
 
-export const getAuthToken = () => {
+export const getAuthToken = (): string | null => {
   const storageToken = localStorage.getItem(AUTH_TOKEN);
 
   if (!storageToken) return null;
@@ -8,10 +8,10 @@ export const getAuthToken = () => {
   return storageToken;
 };
 
-export const setAuthToken = (token: string) => {
+export const setAuthToken = (token: string): void => {
   localStorage.setItem(AUTH_TOKEN, token);
 };
 
-export const deleteAuthToken = () => {
+export const deleteAuthToken = (): void => {
   localStorage.removeItem(AUTH_TOKEN);
 };

@@ -8,7 +8,7 @@ type ProfileRouteParams = {
   username: string;
 };
 
-export default function Profile() {
+export default function Profile(): JSX.Element | null {
   const { username } = useParams<ProfileRouteParams>();
   const isFavoritesTab = !!useRouteMatch({ path: "/profile/:username/favorites", exact: true });
   const articleFilter = isFavoritesTab ? "favorited" : "author";

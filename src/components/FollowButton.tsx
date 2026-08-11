@@ -8,7 +8,7 @@ type FollowButtonProps = {
   actionButton?: boolean;
 };
 
-export default function FollowButton({ profile, actionButton = false }: FollowButtonProps) {
+export default function FollowButton({ profile, actionButton = false }: FollowButtonProps): JSX.Element | null {
   const history = useHistory();
 
   const { data: currentUser, isFetching: isCurrentUserFetching } = useGetCurrentUser();

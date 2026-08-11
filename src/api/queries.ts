@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { getAuthToken } from "lib/jwt";
 import { API_URL } from "utils/constants";
 import { isMultipleArticlesResponse, isProfileResponse, isSingleArticleResponse, isUserResponse } from "utils/guards";
@@ -37,7 +37,7 @@ const getCurrentUser = async (): Promise<User> => {
   return data.user;
 };
 
-export const useGetCurrentUser = () =>
+export const useGetCurrentUser = (): UseQueryResult<User> =>
   useQuery({
     queryKey: [GET_CURRENT_USER_QUERY],
     queryFn: getCurrentUser,
@@ -66,7 +66,7 @@ const getProfile = async (username: string): Promise<Profile> => {
   return data.profile;
 };
 
-export const useGetProfile = (username: string) =>
+export const useGetProfile = (username: string): UseQueryResult<Profile> =>
   useQuery({
     queryKey: [GET_PROFILE_QUERY, username],
     queryFn: () => getProfile(username),
@@ -97,7 +97,10 @@ const getProfileArticles = async (
   return data;
 };
 
-export const useGetProfileArticles = (username: string, filter: ProfileArticleFilter) =>
+export const useGetProfileArticles = (
+  username: string,
+  filter: ProfileArticleFilter
+): UseQueryResult<MultipleArticlesResponse> =>
   useQuery({
     queryKey: [GET_PROFILE_ARTICLES_QUERY, username, filter],
     queryFn: () => getProfileArticles(username, filter),
@@ -125,7 +128,7 @@ const getGlobalArticles = async (): Promise<MultipleArticlesResponse> => {
   return data;
 };
 
-export const useGetGlobalArticles = (enabled: boolean) =>
+export const useGetGlobalArticles = (enabled: boolean): UseQueryResult<MultipleArticlesResponse> =>
   useQuery({
     queryKey: [GET_GLOBAL_ARTICLES_QUERY],
     queryFn: () => getGlobalArticles(),
@@ -154,7 +157,10 @@ const getFeedArticles = async (): Promise<MultipleArticlesResponse> => {
   return data;
 };
 
-export const useGetFeedArticles = (username: string | undefined, enabled: boolean) =>
+export const useGetFeedArticles = (
+  username: string | undefined,
+  enabled: boolean
+): UseQueryResult<MultipleArticlesResponse> =>
   useQuery({
     queryKey: [GET_FEED_ARTICLES_QUERY, username],
     queryFn: getFeedArticles,
@@ -183,7 +189,7 @@ const getArticle = async (slug: string): Promise<Article> => {
   return data.article;
 };
 
-export const useGetArticle = (slug: string) =>
+export const useGetArticle = (slug: string): UseQueryResult<Article> =>
   useQuery({
     queryKey: [GET_ARTICLE_QUERY, slug],
     queryFn: () => getArticle(slug),

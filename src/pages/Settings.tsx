@@ -1,7 +1,7 @@
 import { useLogout } from "api/mutations";
 import { useHistory } from "react-router-dom";
 
-export default function Settings() {
+export default function Settings(): JSX.Element {
   const history = useHistory();
 
   const { mutateAsync: logout, isLoading } = useLogout();

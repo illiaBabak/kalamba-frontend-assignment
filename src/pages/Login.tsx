@@ -17,7 +17,7 @@ const DEFAULT_VALUE: FormData = {
   password: "",
 };
 
-export default function Login() {
+export default function Login(): JSX.Element {
   const history = useHistory();
 
   const [values, setValues] = useState<FormData>(DEFAULT_VALUE);

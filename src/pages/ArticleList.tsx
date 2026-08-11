@@ -5,7 +5,7 @@ import ArticlePreview from "./ArticlePreview";
 
 type Feed = "global" | "personal";
 
-export default function ArticleList() {
+export default function ArticleList(): JSX.Element {
   const [selectedFeed, setSelectedFeed] = useState<Feed>("global");
   const { data: currentUser, isFetching: isCurrentUserFetching } = useGetCurrentUser();
 
